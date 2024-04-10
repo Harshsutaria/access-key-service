@@ -128,6 +128,35 @@ export class AccessKeyController {
     }
   }
 
+  @Get()
+  async getAllAccessKeyController(@Request() req: Request) {
+    logger.info(`inside getAllAccessKeyController with`);
+    const { author, params } = this.getServiceArgs(req);
+
+    // validating the authorized user
+    if (author['role'] !== USER_ROLE.admin) {
+      throw new UnauthorizedException();
+    }
+
+    // Interacting with service layer to update access key information.
+    try {
+      const result = await this.accessKeyService.getAllAccessKeyByIdService(
+        author,
+        params,
+      );
+      return {
+        code: HTTPConst.success.OK,
+        message: 'Fetched Access key data successfully',
+        result,
+      };
+    } catch (error: any) {
+      if (error instanceof BadRequestException) {
+        throw new BadRequestException(error);
+      }
+      throw new InternalServerErrorException(error);
+    }
+  }
+
   /**
    * Private method to extract author,params,payload form the request object
    * @param req

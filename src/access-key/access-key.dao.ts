@@ -2,7 +2,11 @@
 import AccessKey from '../utils/interface/access-key.interface';
 import logger from '../utils/logger';
 import { Postgres } from '../utils/postgres/postgresUtil';
-import { serviceConstants } from '../constants/service-constants';
+import {
+  ACCESS_KEY_STATUS,
+  serviceConstants,
+} from '../constants/service-constants';
+import { count } from 'console';
 
 export class AccessKeyDao {
   // setting dataBaseName for the dao class
@@ -29,6 +33,10 @@ export class AccessKeyDao {
 
   async get(params: any): Promise<AccessKey> {
     return this.getAccessFromPostgres(params.accessKey);
+  }
+
+  async getAll(params: any): Promise<{ count: number; accessKeys: any[] }> {
+    return this.getAllAccessFromPostgres(params);
   }
 
   async delete(params: any): Promise<boolean> {
@@ -129,6 +137,58 @@ export class AccessKeyDao {
     }
 
     return data;
+  }
+
+  private async getAllAccessFromPostgres(
+    params: any,
+  ): Promise<{ count: number; accessKeys: any[] }> {
+    logger.info(
+      `Inside getAllAccessFromPostgres with ${JSON.stringify(params)}`,
+    );
+
+    let data: any;
+
+    // enabling pagination
+    const offset: number = params.offset || 0;
+    const limit: number = params.limit || 5;
+
+    // default result object
+    const result: { count: number; accessKeys: any[] } = {
+      count: 0,
+      accessKeys: [],
+    };
+
+    let sqlQueryParams: Array<string> = [];
+    // Preparing sql update query
+    let sqlQuery: string = `SELECT count("accessKey") over(), * FROM ${this.tableName}`;
+    if (params.status === ACCESS_KEY_STATUS.DISABLED) {
+      sqlQueryParams = [params.status];
+      sqlQuery += ` where status = $1`;
+    }
+    sqlQuery += ` offset ${offset} limit ${limit}`;
+
+    logger.info(`sql is ${sqlQuery}`);
+
+    // initializing connection with the database
+    await this.postgres.connect(this.dataBaseName);
+
+    // Trying to execute postgres query
+    try {
+      data = await this.postgres.execute(sqlQuery, sqlQueryParams);
+      logger.info(`accessKey Fetch by Id dao operation is successful`);
+    } catch (error) {
+      logger.error(`Getting error while fetching accessKey ${error}`);
+      throw new Error(`Getting error while fetching accessKey ${error}`);
+    }
+
+    logger.info(`data is ${JSON.stringify(data)}`);
+
+    if (Array.isArray(data) && data.length > 0) {
+      result.count = data[0].count;
+      result.accessKeys = data;
+    }
+
+    return result;
   }
 
   private async deleteAccessFromPostgres(accessKey: string): Promise<boolean> {

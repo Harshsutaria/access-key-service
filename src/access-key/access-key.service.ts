@@ -91,6 +91,26 @@ export class AccessKeyService {
   }
 
   /**
+   * Service layer for get access key by id.
+   * @param author
+   * @param params
+   * @param body
+   * @returns
+   */
+  async getAllAccessKeyByIdService(author, params) {
+    logger.info(
+      `inside getAllAccessKeyByIdService with ${JSON.stringify(params)}`,
+    );
+
+    // interacting with dao layer to persist access key
+    const result: { count: number; accessKeys: any[] } =
+      await this.accessKeyDao.getAll(params);
+
+    // returning the access key information to the client
+    return result;
+  }
+
+  /**
    * Service layer for delete access key by id.
    * @param author
    * @param params
