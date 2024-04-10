@@ -6,7 +6,6 @@ import {
   ACCESS_KEY_STATUS,
   serviceConstants,
 } from '../constants/service-constants';
-import { count } from 'console';
 
 export class AccessKeyDao {
   // setting dataBaseName for the dao class
