@@ -6,6 +6,7 @@ export const serviceConstants = {
 export const ACCESS_KEY_STATUS = {
   ENABLED: 'ENABLED',
   DISABLED: 'DISABLED',
+  EXPIRED: 'EXPIRED',
 };
 
 export const HTTPConst = {

@@ -135,6 +135,10 @@ export class AccessKeyDao {
       throw new Error(`Getting error while fetching accessKey ${error}`);
     }
 
+    if (Array.isArray(data) && data.length > 0) {
+      data = data[0];
+    }
+
     return data;
   }
 
