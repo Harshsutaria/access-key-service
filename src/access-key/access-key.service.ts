@@ -91,6 +91,30 @@ export class AccessKeyService {
   }
 
   /**
+   * Service layer for delete access key by id.
+   * @param author
+   * @param params
+   * @param body
+   * @returns
+   */
+  async deleteAccessKeyByIdService(author, params) {
+    logger.info(
+      `inside deleteAccessKeyByIdService with ${JSON.stringify(params)}`,
+    );
+
+    // Adding validation for access Key
+    if (!params.accessKey) {
+      throw new BadRequestException(`Access key is mandatory parameter`);
+    }
+
+    // interacting with dao layer to persist access key
+    const deletionStatus: boolean = await this.accessKeyDao.delete(params);
+
+    // returning the access key information to the client
+    return deletionStatus;
+  }
+
+  /**
    * Method to create access key request payload.
    * @param payload
    * @returns

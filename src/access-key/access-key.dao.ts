@@ -31,7 +31,7 @@ export class AccessKeyDao {
     return this.getAccessFromPostgres(params.accessKey);
   }
 
-  async delete(params: any): Promise<AccessKey> {
+  async delete(params: any): Promise<boolean> {
     return this.deleteAccessFromPostgres(params.accessKey);
   }
 
@@ -131,9 +131,7 @@ export class AccessKeyDao {
     return data;
   }
 
-  private async deleteAccessFromPostgres(
-    accessKey: string,
-  ): Promise<AccessKey> {
+  private async deleteAccessFromPostgres(accessKey: string): Promise<boolean> {
     let data: any;
     // Preparing sql update query
     const sqlQuery: string = `DELETE FROM ${this.tableName} where "accessKey" = $1`;
@@ -150,6 +148,6 @@ export class AccessKeyDao {
       throw new Error(`Getting error while deletion accessKey ${error}`);
     }
 
-    return data;
+    return true;
   }
 }

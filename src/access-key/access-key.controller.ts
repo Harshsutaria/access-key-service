@@ -7,6 +7,7 @@ import {
   Put,
   UnauthorizedException,
   Get,
+  Delete,
 } from '@nestjs/common';
 import logger from 'src/utils/logger';
 import { AccessKeyService } from './access-key.service';
@@ -88,6 +89,35 @@ export class AccessKeyController {
       return {
         code: HTTPConst.success.OK,
         message: 'Fetched Access key data successfully',
+        result,
+      };
+    } catch (error: any) {
+      if (error instanceof BadRequestException) {
+        throw new BadRequestException(error);
+      }
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  @Delete(':accessKey')
+  async deleteAccessKeyController(@Request() req: Request) {
+    logger.info(`inside deleteAccessKeyController with`);
+    const { author, params } = this.getServiceArgs(req);
+
+    // validating the authorized user
+    if (author['role'] !== USER_ROLE.admin) {
+      throw new UnauthorizedException();
+    }
+
+    // Interacting with service layer to create access key
+    try {
+      const result = await this.accessKeyService.deleteAccessKeyByIdService(
+        author,
+        params,
+      );
+      return {
+        code: HTTPConst.success.OK,
+        message: 'Access Key Deleted Successfully!!!!',
         result,
       };
     } catch (error: any) {
