@@ -47,7 +47,7 @@ export class AccessKeyService {
   }
 
   /**
-   * Service layer for create access key.
+   * Service layer for update access key.
    * @param author
    * @param params
    * @param body
@@ -61,6 +61,30 @@ export class AccessKeyService {
 
     // interacting with dao layer to persist access key
     const accessKey = await this.accessKeyDao.update(accessKeyPayload);
+
+    // returning the access key information to the client
+    return accessKey;
+  }
+
+  /**
+   * Service layer for get access key by id.
+   * @param author
+   * @param params
+   * @param body
+   * @returns
+   */
+  async getAccessKeyByIdService(author, params) {
+    logger.info(
+      `inside getAccessKeyByIdService with ${JSON.stringify(params)}`,
+    );
+
+    // Adding validation for access Key
+    if (!params.accessKey) {
+      throw new BadRequestException(`Access key is mandatory parameter`);
+    }
+
+    // interacting with dao layer to persist access key
+    const accessKey = await this.accessKeyDao.get(params);
 
     // returning the access key information to the client
     return accessKey;

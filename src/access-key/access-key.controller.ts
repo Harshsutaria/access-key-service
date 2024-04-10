@@ -6,6 +6,7 @@ import {
   InternalServerErrorException,
   Put,
   UnauthorizedException,
+  Get,
 } from '@nestjs/common';
 import logger from 'src/utils/logger';
 import { AccessKeyService } from './access-key.service';
@@ -66,6 +67,27 @@ export class AccessKeyController {
       return {
         code: HTTPConst.success.ACCEPTED,
         message: 'Access Key Updated Successfully!!!!',
+        result,
+      };
+    } catch (error: any) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  @Get(':accessKey')
+  async getAccessKeyController(@Request() req: Request) {
+    logger.info(`inside getAccessKeyController with`);
+    const { author, params } = this.getServiceArgs(req);
+
+    // Interacting with service layer to update access key information.
+    try {
+      const result = await this.accessKeyService.getAccessKeyByIdService(
+        author,
+        params,
+      );
+      return {
+        code: HTTPConst.success.OK,
+        message: 'Fetched Access key data successfully',
         result,
       };
     } catch (error: any) {

@@ -111,6 +111,7 @@ export class AccessKeyDao {
   }
 
   private async getAccessFromPostgres(accessKey: string): Promise<AccessKey> {
+    logger.info(`Inside getAccessFromPostgres with ${accessKey}`);
     let data: any;
     // Preparing sql update query
     const sqlQuery: string = `SELECT * FROM ${this.tableName} where "accessKey" = $1`;
