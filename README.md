@@ -23,6 +23,7 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
+This is the repository created in-order to handle Access Key Management where admins can create access keys for users define rate limits,expiration. User can use the access key created by admin for the token data retrival by respesting the rate limits and expiration time. Please import the collection (accessKeyManagement.postman_collection.json) attached in the repository to play around and test the functionality for the endpoints.
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
