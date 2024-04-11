@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "db44b6f1-c1ee-4ee5-baea-1c04cf9a4250",
+		"name": "accessKeyManagement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "10131361",
+		"_collection_link": "https://dark-sunset-58150.postman.co/workspace/linked-~402fcf6b-71ac-4b59-accf-0e50962b1eef/collection/10131361-db44b6f1-c1ee-4ee5-baea-1c04cf9a4250?action=share&source=collection_link&creator=10131361"
+	},
+	"item": [
+		{
+			"name": "create a access key (only admins)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "username",
+						"value": "harsh",
+						"type": "text"
+					},
+					{
+						"key": "ROLE",
+						"value": "ADMIN",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"user_1\",\n    \"adminId\": \"admin_12\",\n    \"rateLimit\":\"3\",\n    \"expirationTime\": \"2024-04-12T20:37:13.966Z\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://0.0.0.0:3001/access-key/"
+			},
+			"response": []
+		},
+		{
+			"name": "update access key data",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accessKey\": \"b85ff425-faa1-4197-a70a-cad751c96a5a\",\n    \"rateLimit\":\"5\",\n    \"expirationTime\": \"2024-04-12T20:37:13.966Z\",\n    \"status\": \"ENABLED\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://0.0.0.0:3001/access-key/b85ff425-faa1-4197-a70a-cad751c96a5a"
+			},
+			"response": []
+		},
+		{
+			"name": "get plan details by access key",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://0.0.0.0:3001/access-key/b85ff425-faa1-4197-a70a-cad751c96a5a"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete access key (Only Admins)",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "username",
+						"value": "Mike",
+						"type": "text"
+					},
+					{
+						"key": "role",
+						"value": "ADMIN",
+						"type": "text"
+					}
+				],
+				"url": "http://0.0.0.0:3001/access-key/84be89e8-24a7-435f-961a-2e116d3c2cab"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all (only admins)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "username",
+						"value": "mike",
+						"type": "text"
+					},
+					{
+						"key": "role",
+						"value": "ADMIN",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://0.0.0.0:3001/access-key",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "3001",
+					"path": [
+						"access-key"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "DISABLED",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get token data",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "username",
+						"value": "Mike",
+						"type": "text"
+					},
+					{
+						"key": "role",
+						"value": "ADMIN",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://0.0.0.0:3001/token-data?accessKey=b85ff425-faa1-4197-a70a-cad751c96a5a&userId=user_1",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "3001",
+					"path": [
+						"token-data"
+					],
+					"query": [
+						{
+							"key": "accessKey",
+							"value": "b85ff425-faa1-4197-a70a-cad751c96a5a"
+						},
+						{
+							"key": "userId",
+							"value": "user_1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
